@@ -4,10 +4,12 @@ phases:
   pre_build:
     commands:
       - echo Getting commit id
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - COMMIT_ID=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG="$COMMIT_ID"
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo $IMAGE_TAG
+      # - echo Logging in to Amazon ECR...
+      # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   # build:
   #   commands:
@@ -16,24 +18,24 @@ phases:
   #     - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
   #     - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
-  post_build:
-    commands:
-      # - echo Build completed on `date`
-      # - echo Pushing the Docker image...
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+  # post_build:
+  #   commands:
+  #     # - echo Build completed on `date`
+  #     # - echo Pushing the Docker image...
+  #     # - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
-      # Clone the Git repository
-      - echo Cloning the Git repository...
-      - git clone https://github.com/amardeepsinghbrar/amardeep_devops.git
-      - cd amardeep_devops/kubernetes-deployment-ymls
+  #     # Clone the Git repository
+  #     - echo Cloning the Git repository...
+  #     - git clone https://github.com/amardeepsinghbrar/amardeep_devops.git
+  #     - cd amardeep_devops/kubernetes-deployment-ymls
 
-      # Modify the image tag in deployment YAML files
-      - echo Modifying image tag in deployment YAML files...
-      - sed -i "s|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:Latest|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:$IMAGE_TAG|g" deployment.yml
-      # Repeat the sed command for other YAML files if needed
+  #     # Modify the image tag in deployment YAML files
+  #     - echo Modifying image tag in deployment YAML files...
+  #     - sed -i "s|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:Latest|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:$IMAGE_TAG|g" deployment.yml
+  #     # Repeat the sed command for other YAML files if needed
 
-      # Deploy to EKS using kubectl
-      - echo Deploying to EKS...
-      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name prod-eks
-      - kubectl apply -f deployment.yml
-      # Add more kubectl apply commands for other YAML files as needed
+  #     # Deploy to EKS using kubectl
+  #     - echo Deploying to EKS...
+  #     - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name prod-eks
+  #     - kubectl apply -f deployment.yml
+  #     # Add more kubectl apply commands for other YAML files as needed
