@@ -4,8 +4,8 @@ phases:
   pre_build:
     commands:
       - echo Getting commit id
-      - echo $CODEBUILD_SOURCE_VERSION
-      - COMMIT_ID=$(echo $CODEBUILD_SOURCE_VERSION | cut -c 1-7)
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - COMMIT_ID=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG="$COMMIT_ID"
       - echo $IMAGE_TAG
       # - echo Logging in to Amazon ECR...
