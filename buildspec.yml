@@ -35,5 +35,5 @@ phases:
       # Deploy to EKS using kubectl
       - echo Deploying to EKS...
       - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name prod-eks
-      - kubectl apply -f deployment.yaml
+      - kubectl apply -f deployment.yml
       # Add more kubectl apply commands for other YAML files as needed
