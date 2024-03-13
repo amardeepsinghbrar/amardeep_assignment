@@ -29,7 +29,7 @@ phases:
 
       # Modify the image tag in deployment YAML files
       - echo Modifying image tag in deployment YAML files...
-      - sed -i "s|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:Latest|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:$IMAGE_TAG|g" deployment.yaml
+      - sed -i "s|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:Latest|590995038815.dkr.ecr.us-east-1.amazonaws.com/ecr-prod:$IMAGE_TAG|g" deployment.yml
       # Repeat the sed command for other YAML files if needed
 
       # Deploy to EKS using kubectl
